@@ -20,23 +20,30 @@
     <div class="status">Redirecting...</div>
     <div class="status hidden">Failed</div>
 </section>
-<script src="./codePageMap.js"/>
 <script>
-	const codePageMap = window.codePageMap
-	if (!codePageMap) {
-		console.error('Code-page map not found')
-		return fail()
+	window.codePageMap = {
+		wikipedia: 'https://wikipedia.org',
+		ukrainer: 'https://ukrainer.net?test=1',
 	}
+</script>
+<script>
+	(function() {
+		const codePageMap = window.codePageMap
+		if (!codePageMap) {
+			console.error('Code-page map not found')
+			return fail()
+		}
 
-	const code = (new URLSearchParams(location.search)).get('qrcode')
+		const code = (new URLSearchParams(location.search)).get('qrcode')
 
-	if (!codePageMap[code]) {
-		return fail()
-	}
+		if (!codePageMap[code]) {
+			return fail()
+		}
 
-	const targetUrl = new URL(codePageMap[code])
-	targetUrl.searchParams.append('qrcode', code)
-	location.replace(targetUrl.href)
+		const targetUrl = new URL(codePageMap[code])
+		targetUrl.searchParams.append('qrcode', code)
+		location.replace(targetUrl.href)
+	})()
 
 	function fail() {
 		document.querySelectorAll('.status').forEach(el => el.classList.toggle('hidden'))
