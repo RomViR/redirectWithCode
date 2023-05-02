@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Redirecting...</title>
+    <style>
+        .status {
+            font-size: 3rem;
+            margin-top: 40vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<section>
+    <div class="status">Redirecting...</div>
+    <div class="status hidden">Failed</div>
+</section>
+<script src="./codePageMap.js"/>
+<script>
+	const codePageMap = window.codePageMap
+	if (!codePageMap) {
+		console.error('Code-page map not found')
+		return fail()
+	}
+
+	const code = (new URLSearchParams(location.search)).get('qrcode')
+
+	if (!codePageMap[code]) {
+		return fail()
+	}
+
+	const targetUrl = new URL(codePageMap[code])
+	targetUrl.searchParams.append('qrcode', code)
+	location.replace(targetUrl.href)
+
+	function fail() {
+		document.querySelectorAll('.status').forEach(el => el.classList.toggle('hidden'))
+	}
+</script>
+</body>
+</html>
