@@ -37,6 +37,7 @@
 		const code = (new URLSearchParams(location.search)).get('qrcode')
 
 		if (!codePageMap[code]) {
+			console.error('The code is not present in the map file')
 			return fail()
 		}
 
